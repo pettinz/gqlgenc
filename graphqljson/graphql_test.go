@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Yamashou/gqlgenc/graphqljson"
 	"github.com/google/go-cmp/cmp"
+	"github.com/pettinz/gqlgenc/graphqljson"
 )
 
 func TestUnmarshalGraphQL(t *testing.T) {

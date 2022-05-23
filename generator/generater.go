@@ -3,12 +3,13 @@ package generator
 import (
 	"context"
 	"fmt"
+	"go/types"
 
 	"github.com/99designs/gqlgen/api"
 	codegenconfig "github.com/99designs/gqlgen/codegen/config"
 	"github.com/99designs/gqlgen/plugin"
 	"github.com/99designs/gqlgen/plugin/modelgen"
-	"github.com/Yamashou/gqlgenc/config"
+	"github.com/pettinz/gqlgenc/config"
 )
 
 // mutateHook adds the "omitempty" option to nilable fields.
@@ -17,7 +18,9 @@ func mutateHook(build *modelgen.ModelBuild) *modelgen.ModelBuild {
 	for _, model := range build.Models {
 		for _, field := range model.Fields {
 			field.Tag = `json:"` + field.Name
-			if codegenconfig.IsNilable(field.Type) {
+
+			_, isSlice := field.Type.(*types.Slice)
+			if codegenconfig.IsNilable(field.Type) && !isSlice {
 				field.Tag += ",omitempty"
 			}
 			field.Tag += `"`
